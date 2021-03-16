@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { setCurrnetUser } from "../../redux/user/user.action";
 import CustomButton from "../CustomButton/CustomButton.component";
 import InputForm from "../input-form/input-form.component";
 import "./singUp.styles.scss";
@@ -27,15 +29,25 @@ class SingUp extends Component {
 
       axios
         .post("http://localhost/marketphp-code/insertUserData.php", formData)
-        .then((response) => console.log(response.data))
-        .then(
-          this.setState({
-            displayName: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-          })
-        )
+
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            const { displayName, email, id } = response.data;
+            this.props.setCurrentUser({
+              displayName,
+              email,
+              id,
+            });
+            this.setState({
+              displayName: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+            });
+          }
+        })
+
         .catch((e) => console.log(e));
     }
   };
@@ -96,4 +108,8 @@ class SingUp extends Component {
     );
   }
 }
-export default SingUp;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrnetUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(SingUp);

@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { setCurrnetUser } from "../../redux/user/user.action";
 import CustomButton from "../CustomButton/CustomButton.component";
 import InputForm from "../input-form/input-form.component";
 import "./singIn.styles.scss";
@@ -21,8 +23,18 @@ class SingIn extends Component {
 
     axios
       .post("http://localhost/marketphp-code/singIn.php", formData)
-      .then((response) => console.log(response))
-      .then(this.setState({ email: "", password: "" }))
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          const { displayName, email, id } = response.data;
+          this.props.setCurrentUser({
+            displayName,
+            email,
+            id,
+          });
+          this.setState({ email: "", password: "" });
+        }
+      })
       .catch((e) => console.log(e));
   };
   handelChange = (event) => {
@@ -60,4 +72,8 @@ class SingIn extends Component {
     );
   }
 }
-export default SingIn;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrnetUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(SingIn);

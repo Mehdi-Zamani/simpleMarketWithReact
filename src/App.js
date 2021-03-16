@@ -1,30 +1,35 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Homepage from "./components/pages/homepage/homepage.component";
 import ShopPage from "./components/pages/shop/shoppage.component";
 import Header from "./components/header/hedear.component";
 import SingInUp from "./components/pages/singInUp/singInUp.component";
+import { connect } from "react-redux";
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null,
-    };
-  }
   render() {
     return (
       <div className="App">
-        <Header currentUser={this.state.currentUser}></Header>
+        <Header></Header>
         <Switch>
           <Route exact path="/" component={Homepage}></Route>
           <Route path="/shop" component={ShopPage}></Route>
-          <Route path="/singinup" component={SingInUp}></Route>
+          <Route
+            path="/singinup"
+            render={() =>
+              this.props.currentUser ? (
+                <Redirect to="/"></Redirect>
+              ) : (
+                <SingInUp></SingInUp>
+              )
+            }
+          ></Route>
         </Switch>
       </div>
     );
   }
 }
+const mapStateToProps = ({ user }) => ({ currentUser: user.currentUser });
 
-export default App;
+export default connect(mapStateToProps)(App);
