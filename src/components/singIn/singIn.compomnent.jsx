@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 import CustomButton from "../CustomButton/CustomButton.component";
 import InputForm from "../input-form/input-form.component";
@@ -13,6 +14,16 @@ class SingIn extends Component {
   }
   handelSubmit = (event) => {
     event.preventDefault();
+
+    var formData = new FormData();
+    formData.append("email", this.state.email);
+    formData.append("password", this.state.password);
+
+    axios
+      .post("http://localhost/marketphp-code/singIn.php", formData)
+      .then((response) => console.log(response))
+      .then(this.setState({ email: "", password: "" }))
+      .catch((e) => console.log(e));
   };
   handelChange = (event) => {
     const { name, value } = event.target;
@@ -39,6 +50,7 @@ class SingIn extends Component {
             name="password"
             value={this.state.password}
             onChange={this.handelChange}
+            autoComplete="on"
           ></InputForm>
           <div className="bottons">
             <CustomButton type="submit">SING IN</CustomButton>

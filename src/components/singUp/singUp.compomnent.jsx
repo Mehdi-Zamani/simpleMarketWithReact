@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 import CustomButton from "../CustomButton/CustomButton.component";
 import InputForm from "../input-form/input-form.component";
@@ -7,7 +8,7 @@ class SingUp extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
+      displayName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -15,13 +16,35 @@ class SingUp extends Component {
   }
   handelSubmit = (event) => {
     event.preventDefault();
+    const { displayName, email, password, confirmPassword } = this.state;
+    if (password !== confirmPassword) {
+      alert("passwords do not mached");
+    } else {
+      var formData = new FormData();
+      formData.append("displayName", displayName);
+      formData.append("email", email);
+      formData.append("password", password);
+
+      axios
+        .post("http://localhost/marketphp-code/insertUserData.php", formData)
+        .then((response) => console.log(response.data))
+        .then(
+          this.setState({
+            displayName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          })
+        )
+        .catch((e) => console.log(e));
+    }
   };
   handelChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
   render() {
-    const { name, email, password, confirmPassword } = this.state;
+    const { displayName, email, password, confirmPassword } = this.state;
     return (
       <div className="singup">
         <div className="title">
@@ -31,9 +54,9 @@ class SingUp extends Component {
         <form className="form" onSubmit={this.handelSubmit}>
           <InputForm
             type="text"
-            name="name"
+            name="displayName"
             label="Name"
-            value={name}
+            value={displayName}
             onChange={this.handelChange}
           ></InputForm>
           <InputForm
