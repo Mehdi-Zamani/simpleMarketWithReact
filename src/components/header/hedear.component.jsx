@@ -3,9 +3,9 @@ import "./header.styles.scss";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { setCurrnetUser } from "../../redux/user/user.action";
+import { setCurrnetUserSuccess } from "../../redux/user/user.action";
 
-const Header = ({ currentUser, setCurrentUser }) => {
+const Header = ({ currentUser, setCurrentUserToNull }) => {
   return (
     <div className="header">
       <Link to="/" className="logo-countainer">
@@ -19,7 +19,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
           CONTACT
         </Link>
         {currentUser ? (
-          <div className="option" onClick={() => setCurrentUser(null)}>
+          <div className="option" onClick={() => setCurrentUserToNull(null)}>
             SING OUT
           </div>
         ) : (
@@ -35,6 +35,6 @@ const mapStateTpProps = ({ user }) => ({
   currentUser: user.currentUser,
 });
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrnetUser(user)),
+  setCurrentUserToNull: (user) => dispatch(setCurrnetUserSuccess(user)),
 });
 export default connect(mapStateTpProps, mapDispatchToProps)(Header);

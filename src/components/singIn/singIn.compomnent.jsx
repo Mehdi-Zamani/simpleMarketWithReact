@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setCurrnetUser } from "../../redux/user/user.action";
+import { singinSetCurrnetUserStart } from "../../redux/user/user.action";
 import CustomButton from "../CustomButton/CustomButton.component";
 import InputForm from "../input-form/input-form.component";
 import "./singIn.styles.scss";
@@ -16,8 +15,11 @@ class SingIn extends Component {
   }
   handelSubmit = (event) => {
     event.preventDefault();
+    const { setCurrentUser } = this.props;
+    const { email, password } = this.state;
+    setCurrentUser(email, password);
 
-    var formData = new FormData();
+    /* var formData = new FormData();
     formData.append("email", this.state.email);
     formData.append("password", this.state.password);
 
@@ -35,7 +37,7 @@ class SingIn extends Component {
           this.setState({ email: "", password: "" });
         }
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e)); */
   };
   handelChange = (event) => {
     const { name, value } = event.target;
@@ -73,7 +75,8 @@ class SingIn extends Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrnetUser(user)),
+  setCurrentUser: (email, password) =>
+    dispatch(singinSetCurrnetUserStart(email, password)),
 });
 
 export default connect(null, mapDispatchToProps)(SingIn);

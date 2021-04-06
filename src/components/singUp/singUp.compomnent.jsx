@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setCurrnetUser } from "../../redux/user/user.action";
+import { singupSetCurrnetUserStart } from "../../redux/user/user.action";
 import CustomButton from "../CustomButton/CustomButton.component";
 import InputForm from "../input-form/input-form.component";
 import "./singUp.styles.scss";
@@ -19,7 +18,14 @@ class SingUp extends Component {
   handelSubmit = (event) => {
     event.preventDefault();
     const { displayName, email, password, confirmPassword } = this.state;
+    const { setCurrentUser } = this.props;
+
     if (password !== confirmPassword) {
+      alert("passwords do not mached");
+    } else {
+      setCurrentUser(displayName, email, password);
+    }
+    /* if (password !== confirmPassword) {
       alert("passwords do not mached");
     } else {
       var formData = new FormData();
@@ -49,7 +55,7 @@ class SingUp extends Component {
         })
 
         .catch((e) => console.log(e));
-    }
+    } */
   };
   handelChange = (event) => {
     const { name, value } = event.target;
@@ -109,7 +115,8 @@ class SingUp extends Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrnetUser(user)),
+  setCurrentUser: (displayName, email, password) =>
+    dispatch(singupSetCurrnetUserStart(displayName, email, password)),
 });
 
 export default connect(null, mapDispatchToProps)(SingUp);
