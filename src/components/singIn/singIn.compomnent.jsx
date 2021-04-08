@@ -17,7 +17,11 @@ class SingIn extends Component {
     event.preventDefault();
     const { setCurrentUser } = this.props;
     const { email, password } = this.state;
-    setCurrentUser(email, password);
+    if (email === "" || password === "") {
+      alert("please Complete Email & password  ");
+    } else {
+      setCurrentUser(email, password);
+    }
 
     /* var formData = new FormData();
     formData.append("email", this.state.email);
@@ -57,6 +61,7 @@ class SingIn extends Component {
             name="email"
             value={this.state.email}
             onChange={this.handelChange}
+            required
           ></InputForm>
           <InputForm
             label="Password"
@@ -65,6 +70,7 @@ class SingIn extends Component {
             value={this.state.password}
             onChange={this.handelChange}
             autoComplete="on"
+            required
           ></InputForm>
           <div className="bottons">
             <CustomButton type="submit">SING IN</CustomButton>

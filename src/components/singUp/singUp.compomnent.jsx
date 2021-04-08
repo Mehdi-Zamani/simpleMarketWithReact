@@ -22,6 +22,8 @@ class SingUp extends Component {
 
     if (password !== confirmPassword) {
       alert("passwords do not mached");
+    } else if (email === "" || password === "" || confirmPassword === "") {
+      alert("please Complete Email & password  ");
     } else {
       setCurrentUser(displayName, email, password);
     }
