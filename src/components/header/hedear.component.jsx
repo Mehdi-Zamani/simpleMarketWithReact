@@ -4,6 +4,8 @@ import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { setCurrnetUserSuccess } from "../../redux/user/user.action";
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 
 const Header = ({ currentUser, setCurrentUserToNull }) => {
   return (
@@ -31,8 +33,8 @@ const Header = ({ currentUser, setCurrentUserToNull }) => {
     </div>
   );
 };
-const mapStateTpProps = ({ user }) => ({
-  currentUser: user.currentUser,
+const mapStateTpProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
 });
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUserToNull: (user) => dispatch(setCurrnetUserSuccess(user)),
