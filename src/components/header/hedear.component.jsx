@@ -6,8 +6,11 @@ import { connect } from "react-redux";
 import { setCurrnetUserSuccess } from "../../redux/user/user.action";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
+import CartIcon from "../cartIcon/cartIcon.component";
+import CartDropDown from "../cartDropdown/cartDropDown.component";
+import { selectHidden } from "../../redux/cart/cart.selectors";
 
-const Header = ({ currentUser, setCurrentUserToNull }) => {
+const Header = ({ currentUser, setCurrentUserToNull, hidden }) => {
   return (
     <div className="header">
       <Link to="/" className="logo-countainer">
@@ -29,12 +32,16 @@ const Header = ({ currentUser, setCurrentUserToNull }) => {
             SING IN
           </Link>
         )}
+        <CartIcon></CartIcon>
+
+        {hidden ? null : <CartDropDown></CartDropDown>}
       </div>
     </div>
   );
 };
 const mapStateTpProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  hidden: selectHidden,
 });
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUserToNull: (user) => dispatch(setCurrnetUserSuccess(user)),

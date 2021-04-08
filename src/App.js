@@ -8,6 +8,7 @@ import SingInUp from "./components/pages/singInUp/singInUp.component";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./redux/user/user.selectors";
+import CheckOutPage from "./components/pages/checkOut/checkOutPage.component";
 
 class App extends Component {
   render() {
@@ -27,6 +28,7 @@ class App extends Component {
               )
             }
           ></Route>
+          <Route path="/checkout" component={CheckOutPage}></Route>
         </Switch>
       </div>
     );

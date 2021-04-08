@@ -4,10 +4,11 @@ import { fetchCollectionFailure, fetchCollectionSuccess } from "./shop.actions";
 
 export const convertPhpToMap = (collections) => {
   const transformedCollection = collections.map((collection) => {
-    const { items, title } = collection;
+    const { items, title, id } = collection;
     return {
       title,
       items,
+      id,
     };
   });
   return transformedCollection.reduce((accumulator, collection) => {
@@ -21,7 +22,6 @@ function* fetchCollectionStartAysnc() {
     const response = yield fetch("http://localhost/marketphp-code/getData.php");
     const data = yield response.json();
     const collectionMap = yield call(convertPhpToMap, data);
-    console.log(collectionMap);
     yield put(fetchCollectionSuccess(collectionMap));
   } catch (error) {
     yield put(fetchCollectionFailure(error.message));
