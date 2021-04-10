@@ -13,6 +13,7 @@ $out=[];
 foreach($result1  as $key=>$value){
 	$id=$value['id'];
 	$title=$value['title'];
+	
 	$out[$key]['id']=$id;
 	$out[$key]['title']=$title;
 	

@@ -1,4 +1,4 @@
-import directoryActionTypes from "./directory.types";
+// import directoryActionTypes from "./directory.types";
 
 const INITIAL_STATE = {
   category: [
