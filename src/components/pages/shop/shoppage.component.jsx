@@ -1,7 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, lazy } from "react";
 import "./shoppage.styles.scss";
-import CollectionOverview from "../../collectionOverView/collectionOverview.component";
-import CategoryPage from "../category/category.component";
 import { Route } from "react-router";
 import { connect } from "react-redux";
 import { fetchCollectionStart } from "../../../redux/shop/shop.actions";
@@ -11,6 +9,11 @@ import {
   selectCollectionsLoaded,
   selectIsfetching,
 } from "../../../redux/shop/shop.selectors";
+
+const CollectionOverview = lazy(() =>
+  import("../../collectionOverView/collectionOverview.component")
+);
+const CategoryPage = lazy(() => import("../category/category.component"));
 
 const CollectionOverviewWithSpinner = WithSpinner(CollectionOverview);
 const CategoryPageWithSpinner = WithSpinner(CategoryPage);

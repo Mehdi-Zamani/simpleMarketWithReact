@@ -1,14 +1,23 @@
-import React, { Component } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import "./App.css";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Homepage from "./components/pages/homepage/homepage.component";
-import ShopPage from "./components/pages/shop/shoppage.component";
 import Header from "./components/header/hedear.component";
-import SingInUp from "./components/pages/singInUp/singInUp.component";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./redux/user/user.selectors";
-import CheckOutPage from "./components/pages/checkOut/checkOutPage.component";
+
+const Homepage = lazy(() =>
+  import("./components/pages/homepage/homepage.component")
+);
+const ShopPage = lazy(() =>
+  import("./components/pages/shop/shoppage.component")
+);
+const SingInUp = lazy(() =>
+  import("./components/pages/singInUp/singInUp.component")
+);
+const CheckOutPage = lazy(() =>
+  import("./components/pages/checkOut/checkOutPage.component")
+);
 
 class App extends Component {
   render() {
@@ -16,19 +25,21 @@ class App extends Component {
       <div className="App">
         <Header></Header>
         <Switch>
-          <Route exact path="/" component={Homepage}></Route>
-          <Route path="/shop" component={ShopPage}></Route>
-          <Route
-            path="/singinup"
-            render={() =>
-              this.props.currentUser ? (
-                <Redirect to="/"></Redirect>
-              ) : (
-                <SingInUp></SingInUp>
-              )
-            }
-          ></Route>
-          <Route path="/checkout" component={CheckOutPage}></Route>
+          <Suspense fallback={<div>.....</div>}>
+            <Route exact path="/" component={Homepage}></Route>
+            <Route path="/shop" component={ShopPage}></Route>
+            <Route
+              path="/singinup"
+              render={() =>
+                this.props.currentUser ? (
+                  <Redirect to="/"></Redirect>
+                ) : (
+                  <SingInUp></SingInUp>
+                )
+              }
+            ></Route>
+            <Route path="/checkout" component={CheckOutPage}></Route>
+          </Suspense>
         </Switch>
       </div>
     );

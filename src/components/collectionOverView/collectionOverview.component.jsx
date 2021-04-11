@@ -8,7 +8,6 @@ import { createStructuredSelector } from "reselect";
 const CollectionOverview = ({ collections }) => {
   return (
     <div className="collections-overview">
-      {console.log(collections)}
       {collections.map(({ id, ...otherProps }) => (
         <CollectionPreview key={id} {...otherProps}></CollectionPreview>
       ))}
