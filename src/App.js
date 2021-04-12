@@ -26,9 +26,9 @@ class App extends Component {
     return (
       <div className="App">
         <Header></Header>
-        <Switch>
-          <ErrorBoundary>
-            <Suspense fallback={<div>.....</div>}>
+        <ErrorBoundary>
+          <Suspense fallback={<div>.....</div>}>
+            <Switch>
               <Route exact path="/" component={Homepage}></Route>
               <Route path="/shop" component={ShopPage}></Route>
               <Route
@@ -43,9 +43,9 @@ class App extends Component {
               ></Route>
               <Route path="/checkout" component={CheckOutPage}></Route>
               <Route component={Error404}></Route>
-            </Suspense>
-          </ErrorBoundary>
-        </Switch>
+            </Switch>
+          </Suspense>
+        </ErrorBoundary>
       </div>
     );
   }
