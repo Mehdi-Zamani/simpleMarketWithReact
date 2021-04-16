@@ -36,6 +36,7 @@ class ShopPage extends Component {
             ></CollectionOverviewWithSpinner>
           )}
         ></Route>
+
         <Route
           path={`${match.path}/:category`}
           render={(props) => (
