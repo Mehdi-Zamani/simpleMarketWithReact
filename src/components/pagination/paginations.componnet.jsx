@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import { setCurrentButton } from "../../redux/pagination/pagination.actions";
+import {
+  selectCurrentButton,
+  selectPostsPerPage,
+} from "../../redux/pagination/pagination.selectors";
 import "./pagination.styles.scss";
 
-const Pagination = ({ postsPerPage, totalPosts, setCurrentPage }) => {
+const Pagination = ({
+  postsPerPage,
+  totalPosts,
+  setCurrentButton,
+  currentButton,
+}) => {
   const numberOfPages = [];
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     numberOfPages.push(i);
   }
   // Current active button number
-  const [currentButton, setCurrentButton] = useState(1);
+  //const [currentButton, setCurrentButton] = useState(1);
 
   // Array of buttons what we see on the page
   const [arrOfCurrButtons, setArrOfCurrButtons] = useState([]);
@@ -56,7 +68,6 @@ const Pagination = ({ postsPerPage, totalPosts, setCurrentPage }) => {
       setCurrentButton(arrOfCurrButtons[3] - 2);
     }
     setArrOfCurrButtons(tempNumberOfPages);
-    setCurrentPage(currentButton);
   }, [currentButton]);
 
   return (
@@ -106,4 +117,12 @@ const Pagination = ({ postsPerPage, totalPosts, setCurrentPage }) => {
   );
 };
 
-export default Pagination;
+const mapStateToProps = createStructuredSelector({
+  postsPerPage: selectPostsPerPage,
+  currentButton: selectCurrentButton,
+});
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentButton: (page) => dispatch(setCurrentButton(page)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Pagination);

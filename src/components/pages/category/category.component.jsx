@@ -9,16 +9,25 @@ import {
 import CollectionItem from "../../collectionItem/collectionItem.component";
 import Pagination from "../../pagination/paginations.componnet";
 import Error404 from "../../error404/error404.component";
+import {
+  selectCurrentPage,
+  selectPostsPerPage,
+} from "../../../redux/pagination/pagination.selectors";
+//import { setPostsPerPage } from "../../../redux/pagination/pagination.actions";
 
-const CategoryPage = ({ collection, match, collections }) => {
+const CategoryPage = ({
+  collection,
+  match,
+  collections,
+  currentPage,
+  postsPerPage,
+  //setPostsPerPage,
+}) => {
   const exsist = collections.find(
     (colle) => colle.title == match.params.category
   );
   if (!!exsist) {
     const { title, items } = collection;
-    //pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostPerPage] = useState(1);
 
     //get current posts
     const indexOfLastPost = currentPage * postsPerPage;
@@ -26,7 +35,7 @@ const CategoryPage = ({ collection, match, collections }) => {
     const currentPosts = items.slice(indexOfFirstPost, indexOfLastPost);
 
     //load more
-    //const handleLoadMore = () => setPostPerPage(postsPerPage + 1);
+    //const handleLoadMore = () => setPostsPerPage(postsPerPage + 1);
 
     return (
       <div className="collection">
@@ -36,16 +45,12 @@ const CategoryPage = ({ collection, match, collections }) => {
             <CollectionItem key={item.id} item={item}></CollectionItem>
           ))}
         </div>
-        <Pagination
-          totalPosts={items.length}
-          setCurrentPage={setCurrentPage}
-          postsPerPage={postsPerPage}
-        ></Pagination>
-        {/* {items.length > postsPerPage ? (
-        <button className="btn btn-primary" onClick={handleLoadMore}>
-          LoadMore
-        </button>
-      ) : null} */}
+        <Pagination totalPosts={items.length}></Pagination>
+        {/*  {items.length > postsPerPage ? (
+          <button className="btn btn-primary" onClick={handleLoadMore}>
+            LoadMore
+          </button>
+        ) : null} */}
       </div>
     );
   } else {
@@ -55,5 +60,10 @@ const CategoryPage = ({ collection, match, collections }) => {
 const mapStateToProps = (state, ownProps) => ({
   collection: selectCollection(ownProps.match.params.category)(state),
   collections: selectCollectionsForPreview(state),
+  currentPage: selectCurrentPage(state),
+  postsPerPage: selectPostsPerPage(state),
 });
+/* const mapDispatchToProps = (dispatch) => ({
+  setPostsPerPage: (postCount) => dispatch(setPostsPerPage(postCount)),
+}); */
 export default connect(mapStateToProps)(CategoryPage);

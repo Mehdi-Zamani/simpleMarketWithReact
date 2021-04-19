@@ -1,4 +1,5 @@
 import { all, call } from "redux-saga/effects";
+import onSetCurrentButton from "./pagination/pagination.sagas";
 import shopSagas from "./shop/shop.sagas";
 import userSagas from "./user/user.sagas";
 

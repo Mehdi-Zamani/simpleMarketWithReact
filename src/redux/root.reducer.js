@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import shopReducer from "../redux/shop/shop.reducer";
 import directoryReducer from "./directory/directory.reducer";
 import cartReducer from "./cart/cart.reducer";
+import paginationReducer from "./pagination/pagination.reducer";
 
 const persistConfig = {
   key: "root",
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   shop: shopReducer,
   directory: directoryReducer,
   cart: cartReducer,
+  pagination: paginationReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);
