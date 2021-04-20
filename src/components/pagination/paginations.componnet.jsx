@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import { selectFiltersFilters } from "../../redux/filter/filter.selectors";
 import { setCurrentButton } from "../../redux/pagination/pagination.actions";
 import {
   selectCurrentButton,
@@ -14,7 +15,12 @@ const Pagination = ({
   totalPosts,
   setCurrentButton,
   currentButton,
+  filters,
 }) => {
+  if (totalPosts <= postsPerPage) {
+    return null;
+  }
+
   const numberOfPages = [];
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     numberOfPages.push(i);
@@ -68,7 +74,7 @@ const Pagination = ({
       setCurrentButton(arrOfCurrButtons[3] - 2);
     }
     setArrOfCurrButtons(tempNumberOfPages);
-  }, [currentButton]);
+  }, [currentButton, filters]);
 
   return (
     <nav>
@@ -120,6 +126,7 @@ const Pagination = ({
 const mapStateToProps = createStructuredSelector({
   postsPerPage: selectPostsPerPage,
   currentButton: selectCurrentButton,
+  filters: selectFiltersFilters,
 });
 const mapDispatchToProps = (dispatch) => ({
   setCurrentButton: (page) => dispatch(setCurrentButton(page)),

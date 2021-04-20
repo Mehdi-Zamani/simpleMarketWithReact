@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./category.styles.scss";
 import { connect } from "react-redux";
@@ -13,6 +13,9 @@ import {
   selectCurrentPage,
   selectPostsPerPage,
 } from "../../../redux/pagination/pagination.selectors";
+import { FiltersContainer } from "../../filterContainer/filterContainer.component";
+import { FilterBubblesContainer } from "../../filter-bubbles/filterBubbles.component";
+import { selectFiltersFilters } from "../../../redux/filter/filter.selectors";
 //import { setPostsPerPage } from "../../../redux/pagination/pagination.actions";
 
 const CategoryPage = ({
@@ -21,6 +24,7 @@ const CategoryPage = ({
   collections,
   currentPage,
   postsPerPage,
+  filters,
   //setPostsPerPage,
 }) => {
   const exsist = collections.find(
@@ -28,11 +32,34 @@ const CategoryPage = ({
   );
   if (!!exsist) {
     const { title, items } = collection;
+    console.log(items);
+    const filterData = () => {
+      if (_.isEmpty(filters)) {
+        return items;
+      }
+
+      return items.filter((item) => {
+        let matchFilters = true;
+
+        Object.keys(filters).forEach((filterKey) => {
+          if (filters[filterKey].length) {
+            matchFilters = filters[filterKey].includes(
+              item[filterKey].toString()
+            )
+              ? matchFilters
+              : false;
+          }
+        });
+
+        return matchFilters;
+      });
+    };
 
     //get current posts
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = items.slice(indexOfFirstPost, indexOfLastPost);
+    const filter_items = filterData();
+    const currentPosts = filter_items.slice(indexOfFirstPost, indexOfLastPost);
 
     //load more
     //const handleLoadMore = () => setPostsPerPage(postsPerPage + 1);
@@ -40,12 +67,17 @@ const CategoryPage = ({
     return (
       <div className="collection">
         <h2 className="title">{title}</h2>
+        <FilterBubblesContainer></FilterBubblesContainer>
+        <FiltersContainer items={items}></FiltersContainer>
         <div className="items">
           {currentPosts.map((item) => (
             <CollectionItem key={item.id} item={item}></CollectionItem>
           ))}
         </div>
-        <Pagination totalPosts={items.length}></Pagination>
+        <Pagination
+          totalPosts={filter_items.length}
+          className="pagination"
+        ></Pagination>
         {/*  {items.length > postsPerPage ? (
           <button className="btn btn-primary" onClick={handleLoadMore}>
             LoadMore
@@ -62,6 +94,7 @@ const mapStateToProps = (state, ownProps) => ({
   collections: selectCollectionsForPreview(state),
   currentPage: selectCurrentPage(state),
   postsPerPage: selectPostsPerPage(state),
+  filters: selectFiltersFilters(state),
 });
 /* const mapDispatchToProps = (dispatch) => ({
   setPostsPerPage: (postCount) => dispatch(setPostsPerPage(postCount)),

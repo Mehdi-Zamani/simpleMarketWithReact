@@ -6,6 +6,7 @@ import shopReducer from "../redux/shop/shop.reducer";
 import directoryReducer from "./directory/directory.reducer";
 import cartReducer from "./cart/cart.reducer";
 import paginationReducer from "./pagination/pagination.reducer";
+import filtersReducer from "./filter/filter.reducer";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   directory: directoryReducer,
   cart: cartReducer,
   pagination: paginationReducer,
+  filters: filtersReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);
