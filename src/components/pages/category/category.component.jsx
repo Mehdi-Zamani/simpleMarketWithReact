@@ -32,7 +32,6 @@ const CategoryPage = ({
   );
   if (!!exsist) {
     const { title, items } = collection;
-    console.log(items);
     const filterData = () => {
       if (_.isEmpty(filters)) {
         return items;

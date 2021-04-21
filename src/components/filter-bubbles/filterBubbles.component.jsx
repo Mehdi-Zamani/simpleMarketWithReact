@@ -9,8 +9,9 @@ import "./filterBubble.styles.scss";
 
 const FilterBubbles = class FilterBubbles extends Component {
   render() {
-    const allFilters = Object.keys(this.props.filters).reduce(
-      (filters, filterKey) => {
+    const allFilters = Object.keys(this.props.filters)
+      .filter((filterName) => filterName !== "price")
+      .reduce((filters, filterKey) => {
         if (this.props.filters[filterKey]) {
           this.props.filters[filterKey].forEach((filter) => {
             filters.push({
@@ -20,9 +21,8 @@ const FilterBubbles = class FilterBubbles extends Component {
           });
         }
         return filters;
-      },
-      []
-    );
+      }, []);
+
     return (
       <ul className="filter-bubbles">
         {allFilters.map((filter) => {

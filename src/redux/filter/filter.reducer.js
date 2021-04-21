@@ -27,6 +27,13 @@ const filtersReducer = (state = { filters: {} }, action) => {
 
       return Object.assign({}, state, { filters: newAddState });
 
+    case filterActionsType.ADD_FILTER_PRICE:
+      const addStatePrice = Object.assign({}, state.filters, {
+        [action.name]: action.value,
+      });
+
+      return Object.assign({}, state, { filters: addStatePrice });
+
     case filterActionsType.REMOVE_FILTER:
       let currentRemoveFilter =
         state.filters[action.name] && state.filters[action.name].length

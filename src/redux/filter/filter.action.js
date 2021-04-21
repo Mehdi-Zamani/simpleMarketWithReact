@@ -8,6 +8,13 @@ export const addFilter = (name, value) => {
   };
 };
 
+export const addFilterPrice = (name, value) => {
+  return {
+    type: filterActionsType.ADD_FILTER_PRICE,
+    name,
+    value,
+  };
+};
 export const removeFilter = (name, value) => {
   return {
     type: filterActionsType.REMOVE_FILTER,

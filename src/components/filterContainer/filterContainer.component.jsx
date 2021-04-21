@@ -6,6 +6,7 @@ import { setCurrentButton } from "../../redux/pagination/pagination.actions";
 import { createStructuredSelector } from "reselect";
 import { selectFiltersFilters } from "../../redux/filter/filter.selectors";
 import "./filterContainer.styles.scss";
+import PriceFilter from "../priceFilter/priceFilter.componnet";
 
 const Filters = ({ addFilter, removeFilter, resetPage, items, filters }) => {
   const updateFilter = (name, e) => {
@@ -20,7 +21,6 @@ const Filters = ({ addFilter, removeFilter, resetPage, items, filters }) => {
 
   const filterList = {
     color: [],
-    price: [],
   };
 
   // get option base of database column ATTr
@@ -55,41 +55,47 @@ const Filters = ({ addFilter, removeFilter, resetPage, items, filters }) => {
         <h2 className="filters__header__title">Filters</h2>
       </header>
       <div className="filters__inner">
-        {Object.keys(filterList).map((attr, i) => {
-          if (filterList[attr].length > 1) {
-            return (
-              <div key={`filter-${i}`} className="filters__filter">
-                <h3 className="filters__filter__title">{attr}</h3>
-                <ul>
-                  {filterList[attr].map((attrValue, attrValueKey) => {
-                    const inputId = _.snakeCase(attr + attrValue);
-                    const checked = filters[attr]
-                      ? filters[attr].includes(attrValue.toString())
-                      : false;
+        {Object.keys(filterList)
+          .filter((filterName) => filterName !== "price")
+          .map((attr, i) => {
+            if (filterList[attr].length > 1) {
+              return (
+                <div key={`filter-${i}`} className="filters__filter">
+                  <h3 className="filters__filter__title">{attr}</h3>
+                  <ul>
+                    {filterList[attr].map((attrValue, attrValueKey) => {
+                      const inputId = _.snakeCase(attr + attrValue);
+                      const checked = filters[attr]
+                        ? filters[attr].includes(attrValue.toString())
+                        : false;
 
-                    return (
-                      <li key={`${attrValue}-${attrValueKey}`}>
-                        <input
-                          type="checkbox"
-                          id={inputId}
-                          value={attrValue}
-                          name={attrValue}
-                          checked={checked}
-                          onChange={(e) => {
-                            updateFilter(attr, e);
-                          }}
-                        />
-                        <label htmlFor={inputId}>{attrValue}</label>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
-          } else {
-            return null;
-          }
-        })}
+                      return (
+                        <li key={`${attrValue}-${attrValueKey}`}>
+                          <input
+                            type="checkbox"
+                            id={inputId}
+                            value={attrValue}
+                            name={attrValue}
+                            checked={checked}
+                            onChange={(e) => {
+                              updateFilter(attr, e);
+                            }}
+                          />
+                          <label htmlFor={inputId}>{attrValue}</label>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              );
+            } else {
+              return null;
+            }
+          })}
+
+        <PriceFilter
+          allPrice={items.map((item) => Number(item.price))}
+        ></PriceFilter>
       </div>
     </div>
   );
