@@ -35,7 +35,7 @@ class App extends Component {
                 path="/singinup"
                 render={() =>
                   this.props.currentUser ? (
-                    <Redirect to="/"></Redirect>
+                    <Redirect to={`${window.history.back()}`}></Redirect>
                   ) : (
                     <SingInUp></SingInUp>
                   )
