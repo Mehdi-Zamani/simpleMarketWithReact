@@ -2,6 +2,12 @@
 
 include "connect.php";
 
+header('Access-Control-Allow-Origin: *');
+
+header('Access-Control-Allow-Methods: GET, POST');
+
+header("Access-Control-Allow-Headers: X-Requested-With");
+
 $query1="SELECT * FROM tbl_cat";
 $category=$connect->prepare($query1);
 $category->execute();
