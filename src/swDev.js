@@ -4,8 +4,10 @@ const swDev = () => {
       let swUrl = `${process.env.PUBLIC_URL}/sw.js`;
       navigator.serviceWorker
         .register(swUrl)
-        .then((reg) => console.log("sw register success", reg))
-        .catch((err) => console.log("sw register failed", err));
+        .then((reg) => {
+          console.log("sw register success");
+        })
+        .catch((err) => console.error("sw register failed", err));
     });
   }
 };
