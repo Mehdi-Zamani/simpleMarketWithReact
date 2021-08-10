@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { singupSetCurrnetUserStart } from "../../redux/user/user.action";
 import CustomButton from "../CustomButton/CustomButton.component";
 import InputForm from "../input-form/input-form.component";
 import "./singUp.styles.scss";
@@ -7,7 +9,7 @@ class SingUp extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
+      displayName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -15,13 +17,54 @@ class SingUp extends Component {
   }
   handelSubmit = (event) => {
     event.preventDefault();
+    const { displayName, email, password, confirmPassword } = this.state;
+    const { setCurrentUser } = this.props;
+
+    if (password !== confirmPassword) {
+      alert("passwords do not mached");
+    } else if (email === "" || password === "" || confirmPassword === "") {
+      alert("please Complete Email & password  ");
+    } else {
+      setCurrentUser(displayName, email, password);
+    }
+    /* if (password !== confirmPassword) {
+      alert("passwords do not mached");
+    } else {
+      var formData = new FormData();
+      formData.append("displayName", displayName);
+      formData.append("email", email);
+      formData.append("password", password);
+
+      axios
+        .post("http://localhost/marketphp-code/insertUserData.php", formData)
+
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            const { displayName, email, id } = response.data;
+            this.props.setCurrentUser({
+              displayName,
+              email,
+              id,
+            });
+            this.setState({
+              displayName: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+            });
+          }
+        })
+
+        .catch((e) => console.log(e));
+    } */
   };
   handelChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
   render() {
-    const { name, email, password, confirmPassword } = this.state;
+    const { displayName, email, password, confirmPassword } = this.state;
     return (
       <div className="singup">
         <div className="title">
@@ -31,9 +74,9 @@ class SingUp extends Component {
         <form className="form" onSubmit={this.handelSubmit}>
           <InputForm
             type="text"
-            name="name"
+            name="displayName"
             label="Name"
-            value={name}
+            value={displayName}
             onChange={this.handelChange}
           ></InputForm>
           <InputForm
@@ -73,4 +116,9 @@ class SingUp extends Component {
     );
   }
 }
-export default SingUp;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (displayName, email, password) =>
+    dispatch(singupSetCurrnetUserStart(displayName, email, password)),
+});
+
+export default connect(null, mapDispatchToProps)(SingUp);

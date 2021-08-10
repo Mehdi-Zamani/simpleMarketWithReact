@@ -1,0 +1,92 @@
+input[type="checkbox"] {
+  float: left;
+  opacity: 0.01;
+  position: absolute;
+
+  + label {
+    display: inline-block;
+    line-height: 1.4;
+    margin: 0;
+    padding-left: 25px;
+    position: relative;
+
+    &::before {
+      background: no-repeat center center;
+      background-color: rgba(#74828d, 0.25);
+      border: 1px solid #74828d;
+      border-radius: 50%;
+      content: "";
+      cursor: pointer;
+      display: block;
+      height: 15px;
+      left: 0;
+      position: absolute;
+      top: 1px;
+      width: 15px;
+    }
+  }
+
+  &:checked + label {
+    color: #32a9e1;
+
+    &::before {
+      background-color: #32a9e1;
+      background-image: url(http://www.jerrylow.com/demo/icons/checkmark.svg);
+      background-size: 13px 10px;
+      border-color: #32a9e1;
+    }
+  }
+
+  &:focus + label {
+    &::before {
+      outline: auto 5px -webkit-focus-ring-color;
+    }
+  }
+}
+
+.filters {
+  box-shadow: inset -3px 0 1px rgba(0, 0, 0, 0.4);
+  color: #74828d;
+  background: #253447;
+  max-height: 100%;
+  overflow: auto;
+  position: fixed;
+  width: 20%;
+}
+.filters__header {
+  background: #1c2939;
+  box-shadow: inset -3px 0 1px rgba(0, 0, 0, 0.4);
+  padding: 20px 40px;
+}
+
+.filters__header__title {
+  color: white;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.filters__inner {
+  padding: 20px 40px;
+}
+.filters__filter {
+  ul {
+    margin: 0 0 30px;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0 0 10px;
+    }
+  }
+}
+
+.filters__filter__title {
+  border-bottom: 1px solid rgba(#999, 0.3);
+  color: #567893;
+  font-size: 1.2rem;
+  font-weight: 100;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+}

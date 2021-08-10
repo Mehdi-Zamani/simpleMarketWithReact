@@ -1,30 +1,57 @@
-import React, { Component } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import "./App.css";
-import { Route, Switch } from "react-router-dom";
-import Homepage from "./components/pages/homepage/homepage.component";
-import ShopPage from "./components/pages/shop/shoppage.component";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "./components/header/hedear.component";
-import SingInUp from "./components/pages/singInUp/singInUp.component";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "./redux/user/user.selectors";
+import ErrorBoundary from "./components/errorBoundary/errorBoundary.component";
+
+const Homepage = lazy(() =>
+  import("./components/pages/homepage/homepage.component")
+);
+const ShopPage = lazy(() =>
+  import("./components/pages/shop/shoppage.component")
+);
+const SingInUp = lazy(() =>
+  import("./components/pages/singInUp/singInUp.component")
+);
+const CheckOutPage = lazy(() =>
+  import("./components/pages/checkOut/checkOutPage.component")
+);
+const Error404 = lazy(() => import("./components/error404/error404.component"));
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null,
-    };
-  }
   render() {
     return (
       <div className="App">
-        <Header currentUser={this.state.currentUser}></Header>
-        <Switch>
-          <Route exact path="/" component={Homepage}></Route>
-          <Route path="/shop" component={ShopPage}></Route>
-          <Route path="/singinup" component={SingInUp}></Route>
-        </Switch>
+        <Header></Header>
+        <ErrorBoundary>
+          <Suspense fallback={<div>.....</div>}>
+            <Switch>
+              <Route exact path="/" component={Homepage}></Route>
+              <Route path="/shop" component={ShopPage}></Route>
+              <Route
+                path="/singinup"
+                render={() =>
+                  this.props.currentUser ? (
+                    <Redirect to={`${window.history.back()}`}></Redirect>
+                  ) : (
+                    <SingInUp></SingInUp>
+                  )
+                }
+              ></Route>
+              <Route path="/checkout" component={CheckOutPage}></Route>
+              <Route component={Error404}></Route>
+            </Switch>
+          </Suspense>
+        </ErrorBoundary>
       </div>
     );
   }
 }
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
 
-export default App;
+export default connect(mapStateToProps)(App);
