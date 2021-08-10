@@ -1,4 +1,4 @@
-const version = 0.4;
+const version = 0.5;
 
 const staticCacheName = `site-static-v-${version}`;
 const fontCacheName = `font-cache-v-${version}`;
@@ -62,9 +62,6 @@ self.addEventListener("install", (evt) => {
             console.warn(`failed to update ${imageCacheName}.`, err);
           });
         });
-      })
-      .then(() => {
-        IDB();
       })
   );
 });
